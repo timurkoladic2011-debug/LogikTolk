@@ -96,6 +96,8 @@ class App(CTk):
         # ім’я користувача та іконка
         self.USER = "anonim"
         self.ICON = 0
+        self.HOST = "0"
+        self.PORT = 8080
 
         # налаштування вікна
         self.geometry("600x400")
@@ -216,6 +218,45 @@ class App(CTk):
         )
         self.btn_send_mess.place(x=400, y=320)
 
+        self.frame_start = CTkFrame(self, width=600, height=400, fg_color="#342f2f")
+        self.box_port = CTkEntry(
+            self.frame_start,
+            width=250,
+            height=50,
+            fg_color=BLUE,
+            corner_radius=25
+        )
+        self.box_port.place(x=50, y=150)
+        self.box_host = CTkEntry(
+            self.frame_start,
+            width=250,
+            height=50,
+            fg_color=BLUE,
+            corner_radius=25
+        )
+        self.box_host.place(x=50, y=200)
+
+        self.btn_begin = MyBtn(
+            self.frame_start,
+            text="begin",
+            command=self.save_name
+        )
+        self.btn_begin.place(x=100, y=220)
+
+    def begin(self):
+        self.PORT = int(self.box_port.get())
+        self.HOST = int(self.box_host.get())
+        self.frame_start.destroy()
+
+    def start(self):
+        self.HOST = self.box_host.get()
+        self.PORT = int(self.box_port.get())
+        self.frame_start.destroy()
+
+    
+    
+
+
     # ================== АНІМАЦІЇ ==================
 
     def open_name(self):
@@ -267,7 +308,7 @@ class App(CTk):
     def open_chat(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect(("0.tcp.eu.ngrok.io", 11771))
+            self.sock.connect((f"{self.HOST}.tcp.eu.ngrok.io", self.PORT))
 
             # відправка імені та іконки серверу
             self.sock.send(f"{self.USER}|{self.ICON}".encode())
@@ -315,6 +356,9 @@ class App(CTk):
     def close(self):
         self.sock.close()
         self.destroy()
+
+    
+    
 
 # запуск програми
 app = App()
