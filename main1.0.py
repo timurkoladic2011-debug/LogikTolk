@@ -3,22 +3,36 @@ from PIL import Image                # робота з зображеннями
 import socket                        # мережа (чат)
 import threading                     # потоки для прийому повідомлень
 
+import os
+import sys
+
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    p = os.path.join(base_path, "img")
+    p = os.path.join(p, relative_path)
+    return p
+    
 # ================== ЗОБРАЖЕННЯ ==================
 
 # фон головного екрану
-FON = CTkImage(Image.open("fon.png"), size=(350,400))
+FON = CTkImage(Image.open(resource_path("fon.png")), size=(350,400))
 
 # іконка налаштувань
-CONF = CTkImage(Image.open("conf.png"), size=(20,20))
+CONF = CTkImage(Image.open(resource_path("conf.png")), size=(20,20))
 
 # іконка користувача
-USER = CTkImage(Image.open("user.png"), size=(20,20))
+USER = CTkImage(Image.open(resource_path("user.png")), size=(20,20))
 
 # список аватарів користувача
 ICONS = []
 for i in range(7):
     ICONS.append(
-        CTkImage(light_image=Image.open(f"{i}.png"), size=(85,85))
+        CTkImage(light_image=Image.open(resource_path(f"{i}.png")), size=(85,85))
     )
 
 # ================== КОЛЬОРИ ==================
@@ -103,7 +117,7 @@ class App(CTk):
         self.geometry("600x400")
         self.configure(fg_color="#4C474B")
         self.title("LogikTalk")
-        self.iconbitmap("icon.ico")
+        self.iconbitmap((resource_path("icon.ico")))
         self.resizable(False, False)
 
         # ================== ГОЛОВНИЙ ЕКРАН ==================
